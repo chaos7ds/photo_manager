@@ -33,9 +33,9 @@ def sel_img():
     img = ImageTk.PhotoImage(oimg)
 
 
-def select_img():
+def update_image_label():
     sel_img()
-    image.config(image=img)
+    image_label.config(image=img)
 
 
 def list_make():
@@ -56,7 +56,7 @@ def btn3cl():
         if os.path.isdir('C://Users/' + getpass.getuser() + '/Desktop/사진 정리/' + entry.get()):
             newdir = 'C://Users/' + getpass.getuser() + '/Desktop/사진 정리/' + entry.get() + '/'
             shutil.move(sel_file, newdir + os.listdir('C://Users/' + getpass.getuser() + '/Desktop/사진 정리/!정리할 사진')[0])
-            select_img()
+            update_image_label()
 
 
 def btn5cl():
@@ -64,14 +64,14 @@ def btn5cl():
         if os.path.isdir('C://Users/' + getpass.getuser() + '/Desktop/사진 정리/_휴지통'):
             newdir = 'C://Users/' + getpass.getuser() + '/Desktop/사진 정리/_휴지통/'
             shutil.move(sel_file, newdir + os.listdir('C://Users/' + getpass.getuser() + '/Desktop/사진 정리/!정리할 사진')[0])
-            select_img()
+            update_image_label()
 
 
 def btn6cl():
     if not sel_file == 'C://Users/' + getpass.getuser() + '/Desktop/사진 정리/!정리할 사진/�오류 방지용 파일.jpg':
         newdir = 'C://Users/' + getpass.getuser() + '/Desktop/사진 정리/' + folders[list_box.curselection()[0] + 1] + '/'
         shutil.move(sel_file, newdir + os.listdir('C://Users/' + getpass.getuser() + '/Desktop/사진 정리/!정리할 사진')[0])
-        select_img()
+        update_image_label()
 
 
 # 집행부
@@ -84,10 +84,13 @@ if not os.path.isdir('C://Users/' + getpass.getuser() + '/Desktop/사진 정리'
     im = Image.new("RGB", (512, 512), "white")
     im.save('C://Users/' + getpass.getuser() + '/Desktop/사진 정리/!정리할 사진/�오류 방지용 파일.jpg')
 
+# 이동할 폴더 목록
 folder_list()
 
+# img 선택
 sel_img()
 
+# TK 레이아웃
 btn1 = tk.Button(root, text='폴더 추가', width=12, height=17)
 btn1.grid(row=0, column=0)
 
@@ -106,17 +109,17 @@ btn5.grid(row=1, column=2)
 btn6 = tk.Button(root, text='선택 이동', width=12, height=17)
 btn6.grid(row=2, column=2)
 
-image = tk.Label(root, image=img, width=750, height=750)
-image.grid(row=0, column=1, rowspan=3)
+image_label = tk.Label(root, image=img, width=750, height=750)
+image_label.grid(row=0, column=1, rowspan=3)
 
 entry = tk.Entry(root)
 entry.grid(row=3, column=0, columnspan=3)
 
 list_box = tk.Listbox(root, selectmode='single', font=('Fixed', 12), width=65, height=50)
-
 list_make()
 list_box.grid(row=0, column=3, rowspan=4)
 
+# 버튼 이벤트
 btn1.config(command=btn1cl)
 btn3.config(command=btn3cl)
 btn5.config(command=btn5cl)
