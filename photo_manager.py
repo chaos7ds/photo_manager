@@ -39,6 +39,8 @@ class WindowClass(QMainWindow, form_class):
         # 리스트뷰 설정
         for i in range(len(self.DB[0])):
             self.list_widget_1.addItem(self.DB[0][i])
+        for i in range(len(self.DB[3])):
+            self.list_widget_3.addItem(self.DB[3][i])
 
         # 리스트뷰 기능 설정
         self.list_widget_1.itemClicked.connect(self.lw_1)
