@@ -36,14 +36,12 @@ class WindowClass(QMainWindow, form_class):
         # make DB
         self.make_DB()
 
-        # 리스트 설정
+        # 리스트뷰 설정
         for i in range(len(self.DB[0])):
             self.list_widget_1.addItem(self.DB[0][i])
 
-        # 리스트 기능 설정
-        """self.list_widget_1.itemClicked.connect(함수)
-        self.list_widget_2.itemClicked.connect(함수)
-        self.list_widget_3.itemClicked.connect(함수)"""
+        # 리스트뷰 기능 설정
+        self.list_widget_1.itemClicked.connect(self.lw_1)
 
         # 버튼 기능 설정
         self.btn_trash.clicked.connect(self.move_trash)
@@ -80,23 +78,36 @@ class WindowClass(QMainWindow, form_class):
             self.name_list.append(self.name2lst(i))
 
     def make_DB(self):
-        self.DB = [[], [], ['(oo)', '(ox)', '(xx)']]
+        self.DB = [[], [], [], ['(oo)', '(ox)', '(xx)']]
         tmp1 = ''
         tmp2 = []
+        tmp3 = []
         for i in range(len(self.name_list)):
             tmp = self.name_list[i]
             if not tmp[0] == tmp1:
                 if tmp1 != '':
                     self.DB[0].append(tmp1)
                     self.DB[1].append(tmp2)
+                    self.DB[2].append(tmp3)
                 tmp1 = tmp[0]
                 tmp2 = []
+                tmp3 = []
             if not tmp[1] in tmp2:
                 tmp2.append(tmp[1])
+                tmp3.append(int(float(tmp[2])))
+            else:
+                tmp3[-1] = (int(float(tmp[2])))
         self.DB[0].append(tmp1)
         self.DB[1].append(tmp2)
+        self.DB[2].append(tmp3)
 
         print(self.DB)
+
+    def lw_1(self):
+        self.list_widget_2.clear()
+        idx = self.list_widget_1.currentRow()
+        for i in range(len(self.DB[1][idx])):
+            self.list_widget_2.addItem(self.DB[1][idx][i] + '_' + str(self.DB[2][idx][i]))
 
     def move_trash(self):
         print("휴지통")
