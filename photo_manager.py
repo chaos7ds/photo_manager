@@ -6,6 +6,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
+from PyQt5.QtGui import QPixmap
 import os
 from PIL import Image
 import getpass
@@ -22,11 +23,17 @@ class WindowClass(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.setGeometry(100, 100, 1280, 720)
+        self.setWindowTitle("이미지 정리 프로그램")
 
         # 환경 확인
         self.check_dir(dir_root)
         self.check_dir(dir_sorted)
         self.check_dir(dir_unsorted)
+
+        # 사진 띄우기
+        self.sel_img()
+        self.label_1.setPixmap(self.pix_image)
 
         # 기존 사진 이름 리스트
         self.name_list = []
@@ -73,6 +80,21 @@ class WindowClass(QMainWindow, form_class):
         if d == dir_unsorted:
             im = Image.new("RGB", (512, 512), "white")
             im.save(dir_unsorted + '/���오류 방지용 파일.jpg')
+
+    def sel_img(self):
+        sel_file = dir_unsorted + '/' + os.listdir(dir_unsorted)[0]
+
+        self.pix_image = QPixmap()
+        self.pix_image.load(sel_file)
+
+        # resize image
+        oimg = Image.open(sel_file)
+        s = 500
+        print(self.btn_trash.size())
+        if oimg.size[0] > oimg.size[1]:
+            self.pix_image = self.pix_image.scaledToWidth(s)
+        else:
+            self.pix_image = self.pix_image.scaledToHeight(s)
 
     def make_name_list(self):
         for i in os.listdir(dir_sorted):
