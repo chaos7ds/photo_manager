@@ -32,8 +32,7 @@ class WindowClass(QMainWindow, form_class):
         self.check_dir(dir_unsorted)
 
         # 사진 띄우기
-        self.sel_img()
-        self.label_1.setPixmap(self.pix_image)
+        self.set_img()
 
         # 기존 사진 이름 리스트
         self.name_list = []
@@ -73,6 +72,11 @@ class WindowClass(QMainWindow, form_class):
         return ans[:-1]
 
     # special func
+    def resizeEvent(self, event):
+        self.resize(event.size())
+        self.set_img()
+        event.accept()
+
     def check_dir(self, d):
         if not os.path.isdir(d):
             os.makedirs(os.path.join(d))
@@ -81,20 +85,25 @@ class WindowClass(QMainWindow, form_class):
             im = Image.new("RGB", (512, 512), "white")
             im.save(dir_unsorted + '/���오류 방지용 파일.jpg')
 
-    def sel_img(self):
+    def set_img(self):
         sel_file = dir_unsorted + '/' + os.listdir(dir_unsorted)[0]
 
-        self.pix_image = QPixmap()
-        self.pix_image.load(sel_file)
-
-        # resize image
+        pix_image = QPixmap()
+        pix_image.load(sel_file)
+        # resize
+        print(self.label_1.size())
         oimg = Image.open(sel_file)
-        s = 500
-        print(self.btn_trash.size())
-        if oimg.size[0] > oimg.size[1]:
-            self.pix_image = self.pix_image.scaledToWidth(s)
-        else:
-            self.pix_image = self.pix_image.scaledToHeight(s)
+        if oimg.size[0] > self.label_1.width() and oimg.size[1] > self.label_1.height():
+            if oimg.size[0] > oimg.size[1]:
+                pix_image = pix_image.scaledToWidth(self.label_1.width())
+            else:
+                pix_image = pix_image.scaledToHeight(self.label_1.height())
+        elif (oimg.size[0] > self.label_1.width()) and (not oimg.size[1] > self.label_1.height()):
+            pix_image = pix_image.scaledToWidth(self.label_1.width())
+        elif (not oimg.size[0] > self.label_1.width()) and (oimg.size[1] > self.label_1.height()):
+            pix_image = pix_image.scaledToHeight(self.label_1.height())
+        # 이미지 적용
+        self.label_1.setPixmap(pix_image)
 
     def make_name_list(self):
         for i in os.listdir(dir_sorted):
@@ -151,4 +160,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     myWindow = WindowClass()
     myWindow.show()
+    myWindow.set_img()  # 추가부분
     app.exec_()

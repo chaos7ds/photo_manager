@@ -1,156 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>dialog</class>
- <widget class="QDialog" name="dialog">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1104</width>
-    <height>558</height>
+    <width>1101</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>40</y>
-     <width>929</width>
-     <height>361</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="root">
-    <item>
-     <widget class="QLabel" name="label_1">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="3,0,1,1,1">
       <item>
-       <widget class="QPushButton" name="btn_trash">
+       <widget class="QLabel" name="label_1">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
-         <string>휴지통</string>
+         <string>TextLabel</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_execute">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>실행</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_6">
-      <item>
-       <widget class="QListWidget" name="list_widget_1"/>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="line_edit_1"/>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QVBoxLayout" name="verticalLayout_1" stretch="0,0">
         <item>
-         <widget class="QPushButton" name="btn_find_1">
+         <widget class="QPushButton" name="btn_trash">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
-           <string>Find</string>
+           <string>휴지통</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_add_1">
+         <widget class="QPushButton" name="btn_execute">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
-           <string>Add</string>
+           <string>실행</string>
           </property>
          </widget>
         </item>
        </layout>
       </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_7">
       <item>
-       <widget class="QListWidget" name="list_widget_2"/>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="line_edit_2"/>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QPushButton" name="btn_find_2">
-          <property name="text">
-           <string>Find</string>
-          </property>
-         </widget>
+         <widget class="QListWidget" name="list_widget_1"/>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_add_2">
-          <property name="text">
-           <string>Add</string>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="line_edit_1"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QPushButton" name="btn_find_1">
+            <property name="text">
+             <string>Find</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_add_1">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QListWidget" name="list_widget_3"/>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="line_edit_3"/>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QPushButton" name="btn_find_3">
-          <property name="text">
-           <string>Find</string>
-          </property>
-         </widget>
+         <widget class="QListWidget" name="list_widget_2"/>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_add_3">
-          <property name="text">
-           <string>Add</string>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="line_edit_2"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QPushButton" name="btn_find_2">
+            <property name="text">
+             <string>Find</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_add_2">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QListWidget" name="list_widget_3"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="line_edit_3"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QPushButton" name="btn_find_3">
+            <property name="text">
+             <string>Find</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_add_3">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -158,6 +157,7 @@
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
