@@ -74,8 +74,8 @@ class WindowClass(QMainWindow, form_class):
     # special func
     def resizeEvent(self, event):
         self.resize(event.size())
-        self.set_img()
         event.accept()
+        self.set_img()
 
     def check_dir(self, d):
         if not os.path.isdir(d):
@@ -88,22 +88,19 @@ class WindowClass(QMainWindow, form_class):
     def set_img(self):
         sel_file = dir_unsorted + '/' + os.listdir(dir_unsorted)[0]
 
-        pix_image = QPixmap()
-        pix_image.load(sel_file)
+        pi = QPixmap()
+        pi.load(sel_file)
         # resize
-        print(self.label_1.size())
-        oimg = Image.open(sel_file)
-        if oimg.size[0] > self.label_1.width() and oimg.size[1] > self.label_1.height():
-            if oimg.size[0] > oimg.size[1]:
-                pix_image = pix_image.scaledToWidth(self.label_1.width())
-            else:
-                pix_image = pix_image.scaledToHeight(self.label_1.height())
-        elif (oimg.size[0] > self.label_1.width()) and (not oimg.size[1] > self.label_1.height()):
-            pix_image = pix_image.scaledToWidth(self.label_1.width())
-        elif (not oimg.size[0] > self.label_1.width()) and (oimg.size[1] > self.label_1.height()):
-            pix_image = pix_image.scaledToHeight(self.label_1.height())
+        if pi.width() > pi.height():
+            pi = pi.scaledToWidth(self.label_1.width())
+            if pi.height() > self.label_1.height():
+                pi = pi.scaledToHeight(self.label_1.height())
+        else:
+            pi = pi.scaledToHeight(self.label_1.height())
+            if pi.width() > self.label_1.width():
+                pi = pi.scaledToWidth(self.label_1.width())
         # 이미지 적용
-        self.label_1.setPixmap(pix_image)
+        self.label_1.setPixmap(pi)
 
     def make_name_list(self):
         for i in os.listdir(dir_sorted):
