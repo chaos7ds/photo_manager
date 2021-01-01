@@ -26,6 +26,9 @@ class WindowClass(QMainWindow, form_class):
         self.setGeometry(100, 100, 1280, 720)
         self.setWindowTitle("이미지 정리 프로그램")
 
+        # 변수 선언
+        self.idx1 = -1
+
         # 환경 확인
         self.check_dir(dir_root)
         self.check_dir(dir_sorted)
@@ -37,7 +40,6 @@ class WindowClass(QMainWindow, form_class):
         # 기존 사진 이름 리스트
         self.name_list = []
         self.make_name_list()
-        print(self.name_list)
 
         # make DB
         self.make_DB()
@@ -49,14 +51,12 @@ class WindowClass(QMainWindow, form_class):
             self.list_widget_3.addItem(self.DB[3][i])
 
         # 리스트뷰 기능 설정
-        self.list_widget_1.itemClicked.connect(self.lw_1)
+        self.list_widget_1.itemClicked.connect(lambda: self.lw_1(-1))
 
         # 버튼 기능 설정
         self.btn_trash.clicked.connect(self.move_trash)
         self.btn_execute.clicked.connect(self.move_execute)
-        self.btn_find_1.clicked.connect(lambda: self.btn_find(1))
-        self.btn_find_2.clicked.connect(lambda: self.btn_find(2))
-        self.btn_find_3.clicked.connect(lambda: self.btn_find(3))
+        self.btn_find_1.clicked.connect(self.btn_find)
         self.btn_add_1.clicked.connect(lambda: self.btn_add(1))
         self.btn_add_2.clicked.connect(lambda: self.btn_add(2))
         self.btn_add_3.clicked.connect(lambda: self.btn_add(3))
@@ -108,7 +108,7 @@ class WindowClass(QMainWindow, form_class):
             self.name_list.append(self.name2lst(i))
 
     def make_DB(self):
-        self.DB = [[], [], [], ['(oo)', '(ox)', '(xx)']]
+        self.DB = [[], [], [], ['(oo)', '(ox)', '(xx)'], []]
         tmp1 = ''
         tmp2 = []
         tmp3 = []
@@ -119,6 +119,7 @@ class WindowClass(QMainWindow, form_class):
                     self.DB[0].append(tmp1)
                     self.DB[1].append(tmp2)
                     self.DB[2].append(tmp3)
+                    self.DB[4].append(tmp1.replace(' ', ''))
                 tmp1 = tmp[0]
                 tmp2 = []
                 tmp3 = []
@@ -130,14 +131,17 @@ class WindowClass(QMainWindow, form_class):
         self.DB[0].append(tmp1)
         self.DB[1].append(tmp2)
         self.DB[2].append(tmp3)
+        self.DB[4].append(tmp1.replace(' ', ''))
 
-        print(self.DB)
+        for i in range(len(self.DB)):
+            print(f"self.DB {i}\t\t{self.DB[i]}")
 
-    def lw_1(self):
+    def lw_1(self, idx):
+        if idx == -1:
+            self.idx1 = self.list_widget_1.currentRow()
         self.list_widget_2.clear()
-        idx = self.list_widget_1.currentRow()
-        for i in range(len(self.DB[1][idx])):
-            self.list_widget_2.addItem(self.DB[1][idx][i] + '_' + str(self.DB[2][idx][i]))
+        for i in range(len(self.DB[1][self.idx1])):
+            self.list_widget_2.addItem(self.DB[1][self.idx1][i] + '_' + str(self.DB[2][self.idx1][i]))
 
     def move_trash(self):
         print("휴지통")
@@ -145,11 +149,29 @@ class WindowClass(QMainWindow, form_class):
     def move_execute(self):
         print("exe")
 
-    def btn_find(self, k):
-        print(f"find {k}")
+    def btn_find(self):
+        txt = self.line_edit_1.text()
+        txt = txt.replace(' ', '')
+
+        for i in range(len(self.DB[4])):
+            if txt in self.DB[4][i]:
+                self.idx1 = i
+                self.list_widget_1.item(self.idx1).setSelected(True)
+                self.lw_1(self.idx1)
+                break
+        else:
+            idx = self.list_widget_1.currentRow()
+            self.list_widget_2.clear()
+            if idx != -1:
+                self.list_widget_1.item(idx).setSelected(False)
+
+        self.line_edit_1.clear()
 
     def btn_add(self, k):
-        print(f"add {k}")
+        txt = getattr(self, f"line_edit_{k}").text()
+
+        print(f"add {txt}")
+        getattr(self, f"line_edit_{k}").clear()
 
 
 # 집행부
