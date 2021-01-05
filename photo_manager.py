@@ -43,6 +43,7 @@ class WindowClass(QMainWindow, form_class):
 
         # 리스트뷰 기능 설정
         self.list_widget_1.itemClicked.connect(lambda: self.lw_1(-1))
+        self.list_widget_2.itemClicked.connect(self.lw_2)
 
         # 버튼 기능 설정
         self.btn_trash.clicked.connect(self.move_trash)
@@ -170,19 +171,24 @@ class WindowClass(QMainWindow, form_class):
             n = f"{str(self.DB[2][key1][key2]):>5}"
             self.list_widget_2.addItem(n + '_' + key2)
 
+    def lw_2(self):
+        self.idx2 = self.list_widget_2.currentRow()
+
     def move_trash(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
             if os.path.isdir(dir_trash):
-                newdir = dir_trash + '/'
-                shutil.move(self.sel_file, newdir + os.listdir(dir_unsorted)[0])
-                self.set_waiting_state()
+                newdir = dir_trash + '/' + os.listdir(dir_unsorted)[0]
+                if not os.path.isfile(newdir):
+                    shutil.move(self.sel_file, newdir)
+                    self.set_waiting_state()
 
     def move_hold(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
             if os.path.isdir(dir_hold):
-                newdir = dir_hold + '/'
-                shutil.move(self.sel_file, newdir + os.listdir(dir_unsorted)[0])
-                self.set_waiting_state()
+                newdir = dir_hold + '/' + os.listdir(dir_unsorted)[0]
+                if not os.path.isfile(newdir):
+                    shutil.move(self.sel_file, newdir)
+                    self.set_waiting_state()
 
     def move_execute(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
