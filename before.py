@@ -1,8 +1,4 @@
-﻿"""
-작성자	: chaos7ds
-작성일	: 2020.12.29 ~
-"""
-# 도입부
+﻿# 도입부
 import shutil
 import os
 import tkinter as tk
