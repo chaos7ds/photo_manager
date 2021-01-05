@@ -13,6 +13,7 @@ from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 
 from PIL import Image
+import random
 
 # 정의부
 form_class = uic.loadUiType("gui.ui")[0]
@@ -178,6 +179,9 @@ class WindowClass(QMainWindow, form_class):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
             if os.path.isdir(dir_trash):
                 newdir = dir_trash + '/' + os.listdir(dir_unsorted)[0]
+                while os.path.isfile(newdir):
+                    idx = newdir.rfind('.')
+                    newdir = newdir[:idx] + str(random.randrange(0, 10)) + newdir[idx:]
                 if not os.path.isfile(newdir):
                     shutil.move(self.sel_file, newdir)
                     self.set_waiting_state()
@@ -186,6 +190,9 @@ class WindowClass(QMainWindow, form_class):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
             if os.path.isdir(dir_hold):
                 newdir = dir_hold + '/' + os.listdir(dir_unsorted)[0]
+                while os.path.isfile(newdir):
+                    idx = newdir.rfind('.')
+                    newdir = newdir[:idx] + str(random.randrange(0, 10)) + newdir[idx:]
                 if not os.path.isfile(newdir):
                     shutil.move(self.sel_file, newdir)
                     self.set_waiting_state()
