@@ -190,25 +190,43 @@ class WindowClass(QMainWindow, form_class):
         txt = getattr(self, f"line_edit_{k}").text()
 
         if k == 1:
+            # DB 0 업데이트
             self.DB[0].append(txt)
             self.DB[0].sort()
             idx = self.DB[0].index(txt)
 
+            # DB 4 업데이트
+            self.DB[4] = []
+            for i in range(len(self.DB[0])):
+                self.DB[4].append(self.DB[0][i].replace(' ', ''))
+
+            # DB 1 업데이트
             key = txt
             self.DB[1][key] = []
 
+            # list widget 업데이트
             self.set_lw(1)
             self.list_widget_2.clear()
 
+            # list_widget_1 select
             self.idx1 = idx
             self.list_widget_1.item(self.idx1).setSelected(True)
             self.lw_1(self.idx1)
 
         if k == 2:
+            # DB 1 업데이트
             idx = self.list_widget_1.currentRow()
-            self.DB[1][key]
+            key = self.DB[0][idx]
+            self.DB[1][key].append(txt)
+            self.DB[1][key].sort()
 
-        print(f"add {txt}")
+            # DB 2 업데이트
+            key1 = key
+            self.DB[2][key1][txt] = 0
+
+            # list_widget_2 업데이트
+            self.lw_1(idx)
+
         getattr(self, f"line_edit_{k}").clear()
 
 
