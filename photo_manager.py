@@ -182,9 +182,8 @@ class WindowClass(QMainWindow, form_class):
                 while os.path.isfile(newdir):
                     idx = newdir.rfind('.')
                     newdir = newdir[:idx] + str(random.randrange(0, 10)) + newdir[idx:]
-                if not os.path.isfile(newdir):
-                    shutil.move(self.sel_file, newdir)
-                    self.set_waiting_state()
+                shutil.move(self.sel_file, newdir)
+                self.set_waiting_state()
 
     def move_hold(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
@@ -193,9 +192,8 @@ class WindowClass(QMainWindow, form_class):
                 while os.path.isfile(newdir):
                     idx = newdir.rfind('.')
                     newdir = newdir[:idx] + str(random.randrange(0, 10)) + newdir[idx:]
-                if not os.path.isfile(newdir):
-                    shutil.move(self.sel_file, newdir)
-                    self.set_waiting_state()
+                shutil.move(self.sel_file, newdir)
+                self.set_waiting_state()
 
     def move_execute(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
