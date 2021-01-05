@@ -44,7 +44,8 @@ class WindowClass(QMainWindow, form_class):
 
         # 리스트뷰 기능 설정
         self.list_widget_1.itemClicked.connect(lambda: self.lw_1(-1))
-        self.list_widget_2.itemClicked.connect(self.lw_2)
+        self.list_widget_2.itemClicked.connect(lambda: self.lw(2))
+        self.list_widget_3.itemClicked.connect(lambda: self.lw(3))
 
         # 버튼 기능 설정
         self.btn_trash.clicked.connect(self.move_trash)
@@ -83,6 +84,7 @@ class WindowClass(QMainWindow, form_class):
         # 변수 선언
         self.idx1 = -1
         self.idx2 = -1
+        self.idx3 = -1
 
         # 사진 띄우기
         self.set_img()
@@ -172,8 +174,8 @@ class WindowClass(QMainWindow, form_class):
             n = f"{str(self.DB[2][key1][key2]):>5}"
             self.list_widget_2.addItem(n + '_' + key2)
 
-    def lw_2(self):
-        self.idx2 = self.list_widget_2.currentRow()
+    def lw(self, k):
+        setattr(self, f"idx{k}", getattr(self, f"list_widget_{k}").currentRow())
 
     def move_trash(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
@@ -197,7 +199,18 @@ class WindowClass(QMainWindow, form_class):
 
     def move_execute(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
-            pass
+            if self.idx1 != -1 and self.idx2 != -1 and self.idx3 != -1:
+                idx_dot = self.sel_file.rfind('.')
+                key1 = self.DB[0][self.idx1]
+                key2 = self.DB[1][key1][self.idx2]
+                name = f"/{key1}_{key2}_{self.DB[2][key1][key2] + 1:05}_{self.DB[3][self.idx3]}"
+                newdir = dir_sorted + name + self.sel_file[idx_dot:]
+
+                if os.path.isdir(dir_sorted):
+                    if not os.path.isfile(newdir):
+                        shutil.move(self.sel_file, newdir)
+                        self.set_waiting_state()
+                        self.list_widget_2.clear()
 
     def btn_find1(self):
         txt = self.line_edit_1.text()
