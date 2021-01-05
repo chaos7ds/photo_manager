@@ -1,7 +1,7 @@
 """
 작성자	: chaos7ds
-작성일	: 2020.12.29 ~ 2021.01.05
-version : 1.0
+작성일	: 2020.12.29 ~ 2021.01.06
+version : 1.0.1
 """
 # 도입부
 import sys
@@ -39,6 +39,11 @@ class WindowClass(QMainWindow, form_class):
         self.check_dir(dir_unsorted)
         self.check_dir(dir_trash)
         self.check_dir(dir_hold)
+
+        # 변수 선언
+        self.idx1 = -1
+        self.idx2 = -1
+        self.idx3 = -1
 
         # 대기 상태 설정
         self.set_waiting_state()
@@ -82,11 +87,6 @@ class WindowClass(QMainWindow, form_class):
             im.save(dir_unsorted + '/���오류 방지용 파일.jpg')
 
     def set_waiting_state(self):
-        # 변수 선언
-        self.idx1 = -1
-        self.idx2 = -1
-        self.idx3 = -1
-
         # 사진 띄우기
         self.set_img()
 
@@ -103,6 +103,8 @@ class WindowClass(QMainWindow, form_class):
 
     def set_img(self):
         self.sel_file = dir_unsorted + '/' + os.listdir(dir_unsorted)[0]
+        """if self.sel_file == dir_unsorted + '/' + 'desktop.ini':
+            os.remove(self.sel_file)"""
 
         pi = QPixmap()
         pi.load(self.sel_file)
@@ -148,8 +150,8 @@ class WindowClass(QMainWindow, form_class):
         self.DB[2][tmp1] = tmp3
         self.DB[4].append(tmp1.replace(' ', ''))
 
-        for i in range(len(self.DB)):
-            print(f"self.DB {i}\t\t{self.DB[i]}")
+        """for i in range(len(self.DB)):
+            print(f"self.DB {i}\t\t{self.DB[i]}")"""
 
     def set_lw(self, k):
         idx = -1
@@ -187,6 +189,7 @@ class WindowClass(QMainWindow, form_class):
                     newdir = newdir[:idx] + str(random.randrange(0, 10)) + newdir[idx:]
                 shutil.move(self.sel_file, newdir)
                 self.set_waiting_state()
+                self.list_widget_2.clear()
 
     def move_hold(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
@@ -197,6 +200,7 @@ class WindowClass(QMainWindow, form_class):
                     newdir = newdir[:idx] + str(random.randrange(0, 10)) + newdir[idx:]
                 shutil.move(self.sel_file, newdir)
                 self.set_waiting_state()
+                self.list_widget_2.clear()
 
     def move_execute(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
@@ -212,6 +216,11 @@ class WindowClass(QMainWindow, form_class):
                         shutil.move(self.sel_file, newdir)
                         self.set_waiting_state()
                         self.list_widget_2.clear()
+
+                        self.list_widget_1.item(self.idx1).setSelected(True)
+                        self.lw_1(self.idx1)
+                        self.list_widget_2.item(self.idx2).setSelected(True)
+                        self.list_widget_3.item(self.idx3).setSelected(True)
 
     def btn_find1(self):
         txt = self.line_edit_1.text()
