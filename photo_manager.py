@@ -4,12 +4,15 @@
 """
 # 도입부
 import sys
+import os
+import getpass
+import shutil
+
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
-import os
+
 from PIL import Image
-import getpass
 
 # 정의부
 form_class = uic.loadUiType("gui.ui")[0]
@@ -17,6 +20,8 @@ form_class = uic.loadUiType("gui.ui")[0]
 dir_root = 'C://Users/' + getpass.getuser() + '/Desktop/사진 정리'
 dir_unsorted = dir_root + '/unsorted_정리할 사진'
 dir_sorted = dir_root + '/sorted_정리된 사진'
+dir_trash = dir_root + '/휴지통'
+dir_hold = dir_root + '/보류'
 
 
 class WindowClass(QMainWindow, form_class):
@@ -30,6 +35,8 @@ class WindowClass(QMainWindow, form_class):
         self.check_dir(dir_root)
         self.check_dir(dir_sorted)
         self.check_dir(dir_unsorted)
+        self.check_dir(dir_trash)
+        self.check_dir(dir_hold)
 
         # 대기 상태 설정
         self.set_waiting_state()
@@ -90,10 +97,10 @@ class WindowClass(QMainWindow, form_class):
         self.set_lw(3)
 
     def set_img(self):
-        sel_file = dir_unsorted + '/' + os.listdir(dir_unsorted)[0]
+        self.sel_file = dir_unsorted + '/' + os.listdir(dir_unsorted)[0]
 
         pi = QPixmap()
-        pi.load(sel_file)
+        pi.load(self.sel_file)
         # resize
         if pi.width() > pi.height():
             pi = pi.scaledToWidth(self.label_1.width())
@@ -164,13 +171,22 @@ class WindowClass(QMainWindow, form_class):
             self.list_widget_2.addItem(n + '_' + key2)
 
     def move_trash(self):
-        print("휴지통")
+        if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
+            if os.path.isdir(dir_trash):
+                newdir = dir_trash + '/'
+                shutil.move(self.sel_file, newdir + os.listdir(dir_unsorted)[0])
+                self.set_waiting_state()
 
     def move_hold(self):
-        print("보류")
+        if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
+            if os.path.isdir(dir_hold):
+                newdir = dir_hold + '/'
+                shutil.move(self.sel_file, newdir + os.listdir(dir_unsorted)[0])
+                self.set_waiting_state()
 
     def move_execute(self):
-        print("exe")
+        if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
+            pass
 
     def btn_find1(self):
         txt = self.line_edit_1.text()
