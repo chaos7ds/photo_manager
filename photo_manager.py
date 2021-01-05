@@ -26,13 +26,53 @@ class WindowClass(QMainWindow, form_class):
         self.setGeometry(100, 100, 1280, 720)
         self.setWindowTitle("이미지 정리 프로그램")
 
-        # 변수 선언
-        self.idx1 = -1
-
         # 환경 확인
         self.check_dir(dir_root)
         self.check_dir(dir_sorted)
         self.check_dir(dir_unsorted)
+
+        # 대기 상태 설정
+        self.set_waiting_state()
+
+        # 리스트뷰 기능 설정
+        self.list_widget_1.itemClicked.connect(lambda: self.lw_1(-1))
+
+        # 버튼 기능 설정
+        self.btn_trash.clicked.connect(self.move_trash)
+        self.btn_execute.clicked.connect(self.move_execute)
+        self.btn_find_1.clicked.connect(self.btn_find1)
+        self.btn_add_1.clicked.connect(lambda: self.btn_add(1))
+        self.btn_add_2.clicked.connect(lambda: self.btn_add(2))
+
+    # vanilla func
+    def resizeEvent(self, event):
+        self.resize(event.size())
+        event.accept()
+        self.set_img()
+
+    # general func
+    def name2lst(self, n):
+        return n.split('_')
+
+    def lst2name(self, l):
+        ans = ''
+        for i in l:
+            ans = ans + i + '_'
+        return ans[:-1]
+
+    # custom func
+    def check_dir(self, d):
+        if not os.path.isdir(d):
+            os.makedirs(os.path.join(d))
+
+        if d == dir_unsorted:
+            im = Image.new("RGB", (512, 512), "white")
+            im.save(dir_unsorted + '/���오류 방지용 파일.jpg')
+
+    def set_waiting_state(self):
+        # 변수 선언
+        self.idx1 = -1
+        self.idx2 = -1
 
         # 사진 띄우기
         self.set_img()
@@ -45,45 +85,8 @@ class WindowClass(QMainWindow, form_class):
         self.make_DB()
 
         # 리스트뷰 설정
-        for i in range(len(self.DB[0])):
-            self.list_widget_1.addItem(self.DB[0][i])
-        for i in range(len(self.DB[3])):
-            self.list_widget_3.addItem(self.DB[3][i])
-
-        # 리스트뷰 기능 설정
-        self.list_widget_1.itemClicked.connect(lambda: self.lw_1(-1))
-
-        # 버튼 기능 설정
-        self.btn_trash.clicked.connect(self.move_trash)
-        self.btn_execute.clicked.connect(self.move_execute)
-        self.btn_find_1.clicked.connect(self.btn_find)
-        self.btn_add_1.clicked.connect(lambda: self.btn_add(1))
-        self.btn_add_2.clicked.connect(lambda: self.btn_add(2))
-        self.btn_add_3.clicked.connect(lambda: self.btn_add(3))
-
-    # general func
-    def name2lst(self, n):
-        return n.split('_')
-
-    def lst2name(self, l):
-        ans = ''
-        for i in l:
-            ans = ans + i + '_'
-        return ans[:-1]
-
-    # special func
-    def resizeEvent(self, event):
-        self.resize(event.size())
-        event.accept()
-        self.set_img()
-
-    def check_dir(self, d):
-        if not os.path.isdir(d):
-            os.makedirs(os.path.join(d))
-
-        if d == dir_unsorted:
-            im = Image.new("RGB", (512, 512), "white")
-            im.save(dir_unsorted + '/���오류 방지용 파일.jpg')
+        self.set_lw(1)
+        self.set_lw(3)
 
     def set_img(self):
         sel_file = dir_unsorted + '/' + os.listdir(dir_unsorted)[0]
@@ -108,40 +111,56 @@ class WindowClass(QMainWindow, form_class):
             self.name_list.append(self.name2lst(i))
 
     def make_DB(self):
-        self.DB = [[], [], [], ['(oo)', '(ox)', '(xx)'], []]
+        self.DB = [[], dict(), dict(), ['(oo)', '(ox)', '(xx)'], []]
         tmp1 = ''
         tmp2 = []
-        tmp3 = []
+        tmp3 = dict()
         for i in range(len(self.name_list)):
             tmp = self.name_list[i]
             if not tmp[0] == tmp1:
                 if tmp1 != '':
                     self.DB[0].append(tmp1)
-                    self.DB[1].append(tmp2)
-                    self.DB[2].append(tmp3)
+                    self.DB[1][tmp1] = tmp2
+                    self.DB[2][tmp1] = tmp3
                     self.DB[4].append(tmp1.replace(' ', ''))
                 tmp1 = tmp[0]
                 tmp2 = []
-                tmp3 = []
+                tmp3 = dict()
             if not tmp[1] in tmp2:
                 tmp2.append(tmp[1])
-                tmp3.append(int(float(tmp[2])))
-            else:
-                tmp3[-1] = (int(float(tmp[2])))
+            key = tmp[1]
+            tmp3[key] = int(float(tmp[2]))
         self.DB[0].append(tmp1)
-        self.DB[1].append(tmp2)
-        self.DB[2].append(tmp3)
+        self.DB[1][tmp1] = tmp2
+        self.DB[2][tmp1] = tmp3
         self.DB[4].append(tmp1.replace(' ', ''))
 
         for i in range(len(self.DB)):
             print(f"self.DB {i}\t\t{self.DB[i]}")
 
+    def set_lw(self, k):
+        idx = -1
+        if k == 1:
+            idx = 0
+        if k == 3:
+            idx = 3
+
+        if idx != -1:
+            getattr(self, f"list_widget_{k}").clear()
+            for i in range(len(self.DB[idx])):
+                getattr(self, f"list_widget_{k}").addItem(self.DB[idx][i])
+
+    # widget func
     def lw_1(self, idx):
         if idx == -1:
             self.idx1 = self.list_widget_1.currentRow()
         self.list_widget_2.clear()
-        for i in range(len(self.DB[1][self.idx1])):
-            self.list_widget_2.addItem(self.DB[1][self.idx1][i] + '_' + str(self.DB[2][self.idx1][i]))
+
+        key1 = self.DB[0][self.idx1]
+        for i in range(len(self.DB[1][key1])):
+            key2 = self.DB[1][key1][i]
+            n = f"{str(self.DB[2][key1][key2]):>5}"
+            self.list_widget_2.addItem(n + '_' + key2)
 
     def move_trash(self):
         print("휴지통")
@@ -149,7 +168,7 @@ class WindowClass(QMainWindow, form_class):
     def move_execute(self):
         print("exe")
 
-    def btn_find(self):
+    def btn_find1(self):
         txt = self.line_edit_1.text()
         txt = txt.replace(' ', '')
 
@@ -169,6 +188,25 @@ class WindowClass(QMainWindow, form_class):
 
     def btn_add(self, k):
         txt = getattr(self, f"line_edit_{k}").text()
+
+        if k == 1:
+            self.DB[0].append(txt)
+            self.DB[0].sort()
+            idx = self.DB[0].index(txt)
+
+            key = txt
+            self.DB[1][key] = []
+
+            self.set_lw(1)
+            self.list_widget_2.clear()
+
+            self.idx1 = idx
+            self.list_widget_1.item(self.idx1).setSelected(True)
+            self.lw_1(self.idx1)
+
+        if k == 2:
+            idx = self.list_widget_1.currentRow()
+            self.DB[1][key]
 
         print(f"add {txt}")
         getattr(self, f"line_edit_{k}").clear()
