@@ -115,18 +115,7 @@
          <widget class="QListWidget" name="list_widget_3"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="line_edit_3"/>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QPushButton" name="btn_add_3">
-            <property name="text">
-             <string>Add</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <layout class="QHBoxLayout" name="horizontalLayout_2"/>
         </item>
        </layout>
       </item>
