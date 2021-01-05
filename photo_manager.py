@@ -39,6 +39,7 @@ class WindowClass(QMainWindow, form_class):
 
         # 버튼 기능 설정
         self.btn_trash.clicked.connect(self.move_trash)
+        self.btn_hold.clicked.connect(self.move_hold)
         self.btn_execute.clicked.connect(self.move_execute)
         self.btn_find_1.clicked.connect(self.btn_find1)
         self.btn_add_1.clicked.connect(lambda: self.btn_add(1))
@@ -164,6 +165,9 @@ class WindowClass(QMainWindow, form_class):
 
     def move_trash(self):
         print("휴지통")
+
+    def move_hold(self):
+        print("보류")
 
     def move_execute(self):
         print("exe")

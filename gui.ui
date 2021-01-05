@@ -31,7 +31,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_1" stretch="0,0">
+       <layout class="QVBoxLayout" name="verticalLayout_1" stretch="0,0,0">
         <item>
          <widget class="QPushButton" name="btn_trash">
           <property name="sizePolicy">
@@ -42,6 +42,19 @@
           </property>
           <property name="text">
            <string>휴지통</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_hold">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>보류</string>
           </property>
          </widget>
         </item>
