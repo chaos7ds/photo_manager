@@ -1,7 +1,7 @@
 """
 작성자	: chaos7ds
 작성일	: 2020.12.29 ~ 2021.01.06
-version : 1.0.1
+version : 1.0.2
 """
 # 도입부
 import sys
