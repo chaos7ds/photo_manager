@@ -77,6 +77,25 @@ class WindowClass(QMainWindow, form_class):
             ans = ans + i + '_'
         return ans[:-1]
 
+    def move_any(self, d):
+        i1 = self.idx1
+        i2 = self.idx2
+        i3 = self.idx3
+
+        shutil.move(self.sel_file, d)
+        self.set_waiting_state()
+        self.list_widget_2.clear()
+
+        self.idx1 = i1
+        self.list_widget_1.item(self.idx1).setSelected(True)
+        self.lw_1(self.idx1)
+
+        self.idx2 = i2
+        self.list_widget_2.item(self.idx2).setSelected(True)
+
+        self.idx3 = i3
+        self.list_widget_3.item(self.idx3).setSelected(True)
+
     # custom func
     def check_dir(self, d):
         if not os.path.isdir(d):
@@ -168,6 +187,7 @@ class WindowClass(QMainWindow, form_class):
     # widget func
     def lw_1(self, idx):
         # update list of list_widget_2
+        self.idx2 = -1
         if idx == -1:
             self.idx1 = self.list_widget_1.currentRow()
         self.list_widget_2.clear()
@@ -189,9 +209,7 @@ class WindowClass(QMainWindow, form_class):
                 while os.path.isfile(newdir):
                     idx = newdir.rfind('.')
                     newdir = newdir[:idx] + str(random.randrange(0, 10)) + newdir[idx:]
-                shutil.move(self.sel_file, newdir)
-                self.set_waiting_state()
-                self.list_widget_2.clear()
+                self.move_any(newdir)
 
     def move_hold(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
@@ -200,9 +218,7 @@ class WindowClass(QMainWindow, form_class):
                 while os.path.isfile(newdir):
                     idx = newdir.rfind('.')
                     newdir = newdir[:idx] + str(random.randrange(0, 10)) + newdir[idx:]
-                shutil.move(self.sel_file, newdir)
-                self.set_waiting_state()
-                self.list_widget_2.clear()
+                self.move_any(newdir)
 
     def move_execute(self):
         if not self.sel_file == dir_unsorted + '/���오류 방지용 파일.jpg':
@@ -215,14 +231,7 @@ class WindowClass(QMainWindow, form_class):
 
                 if os.path.isdir(dir_sorted):
                     if not os.path.isfile(newdir):
-                        shutil.move(self.sel_file, newdir)
-                        self.set_waiting_state()
-                        self.list_widget_2.clear()
-
-                        self.list_widget_1.item(self.idx1).setSelected(True)
-                        self.lw_1(self.idx1)
-                        self.list_widget_2.item(self.idx2).setSelected(True)
-                        self.list_widget_3.item(self.idx3).setSelected(True)
+                        self.move_any(newdir)
 
     def btn_find1(self):
         txt = self.line_edit_1.text()
