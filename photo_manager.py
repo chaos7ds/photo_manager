@@ -1,7 +1,7 @@
 """
 작성자	: chaos7ds
 작성일	: 2020.12.29 ~ 2021.01.06
-version : 1.0.2
+version : 1.0.3
 """
 # 도입부
 import sys
@@ -45,6 +45,8 @@ class WindowClass(QMainWindow, form_class):
         self.idx2 = -1
         self.idx3 = -1
 
+        self.dev = 0
+
         # 대기 상태 설정
         self.set_waiting_state()
 
@@ -78,19 +80,19 @@ class WindowClass(QMainWindow, form_class):
         return ans[:-1]
 
     def move_any(self, d):
-        i1 = self.idx1
-        i2 = self.idx2
+        it1 = self.DB[0][self.idx1]
+        it2 = self.DB[1][it1][self.idx2]
         i3 = self.idx3
 
         shutil.move(self.sel_file, d)
         self.set_waiting_state()
         self.list_widget_2.clear()
 
-        self.idx1 = i1
+        self.idx1 = self.DB[0].index(it1)
         self.list_widget_1.item(self.idx1).setSelected(True)
         self.lw_1(self.idx1)
 
-        self.idx2 = i2
+        self.idx2 = self.DB[1][it1].index(it2)
         self.list_widget_2.item(self.idx2).setSelected(True)
 
         self.idx3 = i3
@@ -169,8 +171,9 @@ class WindowClass(QMainWindow, form_class):
         self.DB[2][tmp1] = tmp3
         self.DB[4].append(tmp1.replace(' ', ''))
 
-        """for i in range(len(self.DB)):
-            print(f"self.DB {i}\t\t{self.DB[i]}")"""
+        if self.dev == 1:
+            for i in range(len(self.DB)):
+                print(f"self.DB {i}\t\t{self.DB[i]}")
 
     def set_lw(self, k):
         idx = -1
@@ -288,6 +291,7 @@ class WindowClass(QMainWindow, form_class):
 
             # DB 2 업데이트
             key1 = key
+            self.DB[2][key1] = dict()
             self.DB[2][key1][txt] = 0
 
             # list_widget_2 업데이트
