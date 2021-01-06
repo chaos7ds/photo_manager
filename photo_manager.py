@@ -1,7 +1,7 @@
 """
 작성자	: chaos7ds
 작성일	: 2020.12.29 ~ 2021.01.06
-version : 1.0.3
+version : 1.0.4
 """
 # 도입부
 import sys
@@ -124,8 +124,9 @@ class WindowClass(QMainWindow, form_class):
 
     def set_img(self):
         self.sel_file = dir_unsorted + '/' + os.listdir(dir_unsorted)[0]
-        """if self.sel_file == dir_unsorted + '/' + 'desktop.ini':
-            os.remove(self.sel_file)"""
+        while self.sel_file == dir_unsorted + '/desktop.ini':
+            os.remove(self.sel_file)
+            self.sel_file = dir_unsorted + '/' + os.listdir(dir_unsorted)[0]
 
         pi = QPixmap()
         pi.load(self.sel_file)
@@ -291,11 +292,16 @@ class WindowClass(QMainWindow, form_class):
 
             # DB 2 업데이트
             key1 = key
-            self.DB[2][key1] = dict()
+            if key1 not in self.DB[2].keys():
+                self.DB[2][key1] = dict()
             self.DB[2][key1][txt] = 0
 
             # list_widget_2 업데이트
             self.lw_1(idx)
+
+            # list_widget_2 select
+            self.idx2 = self.DB[1][key].index(txt)
+            self.list_widget_2.item(self.idx2).setSelected(True)
 
         getattr(self, f"line_edit_{k}").clear()
 
