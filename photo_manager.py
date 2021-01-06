@@ -167,6 +167,7 @@ class WindowClass(QMainWindow, form_class):
 
     # widget func
     def lw_1(self, idx):
+        # update list of list_widget_2
         if idx == -1:
             self.idx1 = self.list_widget_1.currentRow()
         self.list_widget_2.clear()
@@ -178,6 +179,7 @@ class WindowClass(QMainWindow, form_class):
             self.list_widget_2.addItem(n + '_' + key2)
 
     def lw(self, k):
+        # item clicked
         setattr(self, f"idx{k}", getattr(self, f"list_widget_{k}").currentRow())
 
     def move_trash(self):
@@ -236,6 +238,7 @@ class WindowClass(QMainWindow, form_class):
             idx = self.list_widget_1.currentRow()
             self.list_widget_2.clear()
             if idx != -1:
+                self.idx1 = -1
                 self.list_widget_1.item(idx).setSelected(False)
 
         self.line_edit_1.clear()
@@ -269,7 +272,7 @@ class WindowClass(QMainWindow, form_class):
 
         if k == 2:
             # DB 1 업데이트
-            idx = self.list_widget_1.currentRow()
+            idx = self.idx1
             key = self.DB[0][idx]
             self.DB[1][key].append(txt)
             self.DB[1][key].sort()
